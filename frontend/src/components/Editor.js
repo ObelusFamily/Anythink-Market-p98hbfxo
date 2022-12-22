@@ -52,7 +52,7 @@ class Editor extends React.Component {
       const item = {
         title: this.props.title,
         description: this.props.description,
-        image: this.props.image,
+        image: this.props.image || '/placeholder.png',
         tagList: this.props.tagList,
       };
 
