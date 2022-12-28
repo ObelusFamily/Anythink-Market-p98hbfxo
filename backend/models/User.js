@@ -33,7 +33,7 @@ var UserSchema = new mongoose.Schema(
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     hash: String,
     salt: String,
-    isVerified: {
+    verified: {
       type: Boolean,
       default: false,
     },
@@ -89,7 +89,8 @@ UserSchema.methods.toProfileJSONFor = function(user) {
     bio: this.bio,
     image:
       this.image || "https://static.productionready.io/images/smiley-cyrus.jpg",
-    following: user ? user.isFollowing(this._id) : false
+    following: user ? user.isFollowing(this._id) : false,
+    verified: user && user.isVerified() || true,
   };
 };
 
@@ -131,12 +132,13 @@ UserSchema.methods.isFollowing = function(id) {
   });
 };
 
-// UserSchema.methods.isVerified = function() {
-//   return this.isVerified;
-// };
+UserSchema.methods.isVerified = function() {
+  return this.verified;
+};
 
-// UserSchema.methods.setVerified = function(verified) {
-//   this.isVerified = verified;
-// };
+UserSchema.methods.setVerified = function(verified) {
+  this.verified = verified;
+  return this.save();
+};
 
 mongoose.model("User", UserSchema);

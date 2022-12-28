@@ -88,9 +88,13 @@ router.get("/", auth.optional, function(req, res, next) {
           items: await Promise.all(
             items.map(async function(item) {
               item.seller = await User.findById(item.seller);
-              const tempItem = item.toJSONFor(user);
-              tempItem.seller.isVerified = tempItem.seller.isVerified || false;
-              return tempItem;
+
+              // if (!item.seller.isVerified) {
+              //   item.seller.isVerified = true;
+              //   await item.seller.save();
+              // }
+
+              return item.toJSONFor(user);
             })
           ),
           itemsCount: itemsCount
