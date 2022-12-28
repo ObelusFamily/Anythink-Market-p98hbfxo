@@ -90,7 +90,7 @@ UserSchema.methods.toProfileJSONFor = function(user) {
     image:
       this.image || "https://static.productionready.io/images/smiley-cyrus.jpg",
     following: user ? user.isFollowing(this._id) : false,
-    verified: user && user.isVerified() || true,
+    isVerified: user && user.isVerified() || true,
   };
 };
 
