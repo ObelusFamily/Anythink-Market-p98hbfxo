@@ -32,7 +32,11 @@ var UserSchema = new mongoose.Schema(
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     hash: String,
-    salt: String
+    salt: String,
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
@@ -126,5 +130,13 @@ UserSchema.methods.isFollowing = function(id) {
     return followId.toString() === id.toString();
   });
 };
+
+// UserSchema.methods.isVerified = function() {
+//   return this.isVerified;
+// };
+
+// UserSchema.methods.setVerified = function(verified) {
+//   this.isVerified = verified;
+// };
 
 mongoose.model("User", UserSchema);
