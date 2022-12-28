@@ -87,11 +87,7 @@ router.get("/", auth.optional, function(req, res, next) {
           items: await Promise.all(
             items.map(async function(item) {
               item.seller = await User.findById(item.seller);
-
-              const tempItem = item.toJSONFor(user);
-              tempItem.image = tempItem.image || '/placeholder.png';
-
-              return tempItem;
+              return item.toJSONFor(user);
             })
           ),
           itemsCount: itemsCount
@@ -169,10 +165,7 @@ router.get("/:item", auth.optional, function(req, res, next) {
     .then(function(results) {
       var user = results[0];
 
-      const item = req.item.toJSONFor(user);
-      item.image = item.image || '/placeholder.png';
-
-      return res.json({ item });
+      return res.json({ item: req.item.toJSONFor(user) });
     })
     .catch(next);
 });
