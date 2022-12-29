@@ -89,11 +89,6 @@ router.get("/", auth.optional, function(req, res, next) {
             items.map(async function(item) {
               item.seller = await User.findById(item.seller);
 
-              // if (!item.seller.isVerified) {
-              //   item.seller.isVerified = true;
-              //   await item.seller.save();
-              // }
-
               return item.toJSONFor(user);
             })
           ),
