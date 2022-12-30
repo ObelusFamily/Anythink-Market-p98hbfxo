@@ -27,6 +27,10 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class Home extends React.Component {
+  state = {
+    searchText: ''
+  };
+
   componentWillMount() {
     const tab = "all";
     const itemsPromise = agent.Items.all;
@@ -45,8 +49,27 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home-page">
-        <Banner />
+        <Banner>
+          <input
+            size='30'
+            type="text"
+            id="search-box"
+            placeholder="What is it that you truly desire?"
+            onChange={({ target: { value } }) => {
+              const tab = "all";
+              const itemsPromise = agent.Items.all;
+              const itemsByTitlePromise = agent.Items.byTitle;          
 
+              this.setState({ searchText: value });
+              this.props.onLoad(
+                tab,
+                value.length > 3 ? itemsByTitlePromise : itemsPromise, 
+                Promise.all([agent.Tags.getAll(), value.length > 3 ? itemsByTitlePromise(value) : itemsPromise()])
+              );
+            }}
+            style={{ borderRadius: '10px' }}
+          />
+        </Banner>
         <div className="container page">
           <Tags tags={this.props.tags} onClickTag={this.props.onClickTag} />
           <MainView />
