@@ -46,30 +46,27 @@ class Home extends React.Component {
     this.props.onUnload();
   }
 
+  onSearchTextChange = (searchText) => {
+    const tab = "all";
+    const itemsPromise = agent.Items.all;
+    const itemsByTitlePromise = agent.Items.byTitle;          
+
+    this.setState({ searchText });
+    this.props.onLoad(
+      tab,
+      searchText.length > 3 ? itemsByTitlePromise : itemsPromise, 
+      Promise.all([
+        agent.Tags.getAll(), 
+        searchText.length > 3 ? itemsByTitlePromise(value) : itemsPromise()
+      ])
+    );
+  }
+
   render() {
     return (
       <div className="home-page">
-        <Banner>
-          <input
-            size='30'
-            type="text"
-            id="search-box"
-            placeholder="What is it that you truly desire?"
-            onChange={({ target: { value } }) => {
-              const tab = "all";
-              const itemsPromise = agent.Items.all;
-              const itemsByTitlePromise = agent.Items.byTitle;          
+        <Banner onSearchTextChange={this.onSearchTextChange}/>
 
-              this.setState({ searchText: value });
-              this.props.onLoad(
-                tab,
-                value.length > 3 ? itemsByTitlePromise : itemsPromise, 
-                Promise.all([agent.Tags.getAll(), value.length > 3 ? itemsByTitlePromise(value) : itemsPromise()])
-              );
-            }}
-            style={{ borderRadius: '10px' }}
-          />
-        </Banner>
         <div className="container page">
           <Tags tags={this.props.tags} onClickTag={this.props.onClickTag} />
           <MainView />
