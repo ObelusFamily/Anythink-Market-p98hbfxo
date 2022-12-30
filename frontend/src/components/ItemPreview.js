@@ -54,10 +54,13 @@ const ItemPreview = (props) => {
               className="user-pic rounded-circle pr-1"
             />
           </Link>
-          <div className="flex-grow-1">
-            <img src='/verified_seller.svg' alt='verified' />
-            TOP SELLER
-          </div>
+          {
+            item.seller.isVerified && 
+            <div className="flex-grow-1">
+              <img src='/verified_seller.svg' alt='verified' />
+              TOP SELLER
+            </div>
+          }
           <button className="btn btn-outline-secondary" onClick={handleClick}>
             <i className="ion-heart"></i> {item.favoritesCount}
           </button>
