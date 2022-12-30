@@ -57,7 +57,7 @@ class Home extends React.Component {
       searchText.length > 3 ? itemsByTitlePromise : itemsPromise, 
       Promise.all([
         agent.Tags.getAll(), 
-        searchText.length > 3 ? itemsByTitlePromise(value) : itemsPromise()
+        searchText.length > 3 ? itemsByTitlePromise(searchText) : itemsPromise()
       ])
     );
   }
@@ -69,7 +69,7 @@ class Home extends React.Component {
 
         <div className="container page">
           <Tags tags={this.props.tags} onClickTag={this.props.onClickTag} />
-          <MainView />
+          <MainView searchText={this.state.searchText} />
         </div>
       </div>
     );
