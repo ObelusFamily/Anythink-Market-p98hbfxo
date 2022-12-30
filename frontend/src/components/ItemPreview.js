@@ -57,7 +57,7 @@ const ItemPreview = (props) => {
           {
             item.seller.isVerified && 
             <div className="flex-grow-1">
-              <img src='/verified_seller.svg' alt='verified' />
+              <img src='verified_seller.svg' alt='verified' />
               TOP SELLER
             </div>
           }
