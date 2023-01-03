@@ -1,1 +1,1 @@
-ALTER TABLE "users" ADD COLUMN nickname VARCHAR(20);
+ALTER TABLE users ADD COLUMN nickname VARCHAR(20);
