@@ -1,2 +1,1 @@
-ALTER TABLE "users" DROP COLUMN IF EXISTS nickname;
-ALTER TABLE "users" ADD nickname VARCHAR(20);
+ALTER TABLE "users" ADD COLUMN nickname VARCHAR(20);
