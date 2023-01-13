@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "engines": {
-    "node": "^16"
+    "node": ">=16.0.0"
   },
   "scripts": {
     "start": "node ./app.js",
@@ -26,7 +26,7 @@
     "jsonwebtoken": "7.1.9",
     "method-override": "2.3.5",
     "methods": "1.1.2",
-    "mongoose": "5.12.5",
+    "mongoose": "6.0.0",
     "mongoose-unique-validator": "^3.0.0",
     "morgan": "1.7.0",
     "passport": "0.3.2",
@@ -36,6 +36,9 @@
     "underscore": "1.8.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "find-config": "^1.0.0",
+    "generate-password": "^1.7.0",
     "newman": "^3.8.2",
     "nodemon": "^1.11.0"
   }
