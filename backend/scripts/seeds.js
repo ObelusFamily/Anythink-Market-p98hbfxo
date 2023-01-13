@@ -1,9 +1,9 @@
 //TODO: seeds script should come here, so we'll be able to put some data in our local env
-// const path = require("path");
-require("dotenv").config({ path: require("find-config")(".env") });
+require("dotenv").config();
 var mongoose = require("mongoose");
 var { faker } = require("@faker-js/faker");
 var generator = require('generate-password');
+const [ MONGODB_URI, NODE_ENV ] = [process.env.MONGODB_URI, process.env.NODE_ENV];
 
 require("../models/User");
 require("../models/Item");
@@ -89,14 +89,14 @@ async function insertCollection(Collection, documents) {
   }
 };
 
-async function process() {
+async function run() {
   generatePasswords(100);
   createDocuments(100, 'User');
   createDocuments(100, 'Item');
   createDocuments(100, 'Comment');
 
-  await mongoose.connect(process.env.MONGODB_URI);
-  var isProduction = process.env.NODE_ENV === "production" || process.env.NODE_ENV === "prod";
+  mongoose.connect(MONGODB_URI);
+  var isProduction = NODE_ENV === "production" || NODE_ENV === "prod";
   if (!isProduction) { mongoose.set("debug", true); }
 
   await clearDocuments();
@@ -104,4 +104,4 @@ async function process() {
   mongoose.disconnect();
 }
 
-process();
+run();
