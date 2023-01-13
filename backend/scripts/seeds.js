@@ -77,15 +77,12 @@ async function insertDocuments() {
 
 async function insertCollection(DocType, documents) {
   session = await mongoose.startSession();
-  session.startTransaction();
   try {
     await DocType.insertMany(documents, { session });
-    await session.commitTransaction();
     console.log('Documents added > ', await DocType.countDocuments());
   }
   catch(error) {
     console.log('Errors >> ', error);
-    await session.abortTransaction();
   }
   finally {
     await session.endSession();
