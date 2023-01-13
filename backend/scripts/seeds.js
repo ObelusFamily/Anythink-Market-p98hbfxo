@@ -30,7 +30,8 @@ function generatePasswords(count) {
 
 function createRandomUser(index) {
   const user = new User;
-  user.username = faker.name.firstName();
+  const username = faker.name.firstName() + faker.name.lastName();
+  user.username = username.replace(/[^a-zA-Z]/g, "");
   user.email = faker.internet.email();
   user.setPassword(passwords[index]);
   users.push(user);
@@ -74,14 +75,16 @@ async function insertDocuments() {
 
 }
 
-async function insertCollection(Collection, documents) {
+async function insertCollection(DocType, documents) {
   session = await mongoose.startSession();
   session.startTransaction();
   try {
-    await Collection.insertMany(documents, { session });
+    await DocType.insertMany(documents, { session });
     await session.commitTransaction();
+    console.log('Documents added > ', await DocType.countDocuments());
   }
   catch(error) {
+    console.log('Errors >> ', error);
     await session.abortTransaction();
   }
   finally {
@@ -90,18 +93,19 @@ async function insertCollection(Collection, documents) {
 };
 
 async function run() {
-  generatePasswords(100);
-  createDocuments(100, 'User');
-  createDocuments(100, 'Item');
-  createDocuments(100, 'Comment');
+  generatePasswords(10);
+  createDocuments(10, 'User');
+  console.log('Users >> ', users.map(({ username }) => username ));
+  createDocuments(10, 'Item');
+  createDocuments(10, 'Comment');
 
   mongoose.connect(MONGODB_URI);
   var isProduction = NODE_ENV === "production" || NODE_ENV === "prod";
-  if (!isProduction) { mongoose.set("debug", true); }
+  // if (!isProduction) { mongoose.set("debug", true); }
 
   await clearDocuments();
   await insertDocuments();
-  mongoose.disconnect();
+  await mongoose.disconnect();
 }
 
 run();
