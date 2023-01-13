@@ -79,10 +79,9 @@ async function insertCollection(DocType, documents) {
   session = await mongoose.startSession();
   try {
     await DocType.insertMany(documents, { session });
-    console.log('Documents added > ', await DocType.countDocuments());
   }
   catch(error) {
-    console.log('Errors >> ', error);
+    console.error('Errors >> ', error);
   }
   finally {
     await session.endSession();
@@ -90,15 +89,15 @@ async function insertCollection(DocType, documents) {
 };
 
 async function run() {
-  generatePasswords(10);
-  createDocuments(10, 'User');
-  console.log('Users >> ', users.map(({ username }) => username ));
-  createDocuments(10, 'Item');
-  createDocuments(10, 'Comment');
+  generatePasswords(100);
+
+  createDocuments(100, 'User');
+  createDocuments(100, 'Item');
+  createDocuments(100, 'Comment');
 
   mongoose.connect(MONGODB_URI);
   var isProduction = NODE_ENV === "production" || NODE_ENV === "prod";
-  // if (!isProduction) { mongoose.set("debug", true); }
+  if (!isProduction) { mongoose.set("debug", true); }
 
   await clearDocuments();
   await insertDocuments();
